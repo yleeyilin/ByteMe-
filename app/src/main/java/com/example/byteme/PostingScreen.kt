@@ -352,7 +352,7 @@ fun StaticToggleSet() {
                     containerColor = Color(0xfff10e2a),
                     disabledContentColor = Color.White,
                     disabledContainerColor = Color(0xfff10e2a))) {
-                Row (modifier = Modifier.padding(start = 50.dp, top = 18.dp)){
+                Row (modifier = Modifier.padding(start = 50.dp, top = 18.dp)) {
                     Icon(imageVector = Icons.Filled.Upload, contentDescription = "Post")
                     Surface(
                         modifier = Modifier.size(5.dp),
