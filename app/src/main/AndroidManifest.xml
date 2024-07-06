@@ -11,6 +11,7 @@
     <!-- Required only if your app needs to access audio files
          that other apps created. -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 

@@ -164,10 +164,10 @@ fun TopBar(packageName: String) {
 
 @Composable
 fun StaticToggleSet() {
-    var checkedTag by remember { mutableStateOf(true) }
+    var checkedTag by remember { mutableStateOf(false) }
     var checkedDuet by remember { mutableStateOf(true) }
-    var checkedStitch by remember { mutableStateOf(true) }
-    var checkedAdBlend by remember { mutableStateOf(true) }
+    var checkedStitch by remember { mutableStateOf(false) }
+    var checkedAdBlend by remember { mutableStateOf(false) }
     //TODO: Make toggle set
     Column {
         Row() {

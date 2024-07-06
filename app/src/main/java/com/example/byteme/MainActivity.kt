@@ -23,7 +23,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             ByteMeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) {
-                    PostingScreen(packageName)
+//                    PostingScreen(packageName)
+                    VideoScreen()
                 }
             }
         }
