@@ -19,9 +19,9 @@ AdBlend is an innovative application designed to revolutionize the way content c
 2. **Download android studio and open our project**
   
 3. **Add gradle configuration**
-   Set `module` as `ByteMe.app.main`.
-   Deploy: `Default APK`.
-   Launch: `Default activity`.
+   * Set `module` as `ByteMe.app.main`.   
+   * Deploy: `Default APK`.
+   * Launch: `Default activity`.
 
 ## Installation for our object tracking model
 
