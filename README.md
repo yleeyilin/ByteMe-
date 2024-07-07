@@ -10,7 +10,20 @@ AdBlend is an innovative application designed to revolutionize the way content c
 - **Real-Time Object Detection:** Leveraging the YOLOv9 object detection model, AdBlend accurately identifies key areas within the video for optimal placement of sponsored content and isolates that area.
 - **Enhanced Video Processing:** With the power of OpenCV, AdBlend replaces the identified area with the image of the ad, ensuring the integrated content blends seamlessly with the original footage.
 
-## Installation
+## Try out our app 
+1. **Clone this repository:**
+  ```sh
+  git clone https://github.com/yleeyilin/ByteMe-.git
+  cd ../apps/
+  ```
+2. **Download android studio and open our project**
+  
+3. **Add gradle configuration**
+   Set `module` as `ByteMe.app.main`.
+   Deploy: `Default APK`.
+   Launch: `Default activity`.
+
+## Installation for our object tracking model
 
 1. **Clone this repository:**
   ```sh
