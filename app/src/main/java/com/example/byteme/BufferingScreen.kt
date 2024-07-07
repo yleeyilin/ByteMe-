@@ -4,8 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -20,73 +19,48 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.media3.common.MediaItem
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.PlayerView
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
+import kotlinx.coroutines.delay
 
 @Composable
-fun VideoScreen(videoURI: String, onPostClick: () -> Unit) {
-    // Get the current context
-    val context = LocalContext.current
+fun BufferingScreen(onFinished: () -> Unit) {
+    val tiktokAnimationComposition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(
+            R.raw.tiktok
+        )
+    )
 
-    // Initialize ExoPlayer
-    val exoPlayer = ExoPlayer.Builder(context).build()
-
-    // Create a MediaSource
-//    val mediaSource = remember("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4") {
-//        MediaItem.fromUri("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
-//    }
-    val mediaSource = MediaItem.fromUri(videoURI)
-
-    // Set MediaSource to ExoPlayer
-    LaunchedEffect(mediaSource) {
-        exoPlayer.setMediaItem(mediaSource)
-        exoPlayer.prepare()
-    }
-
-    // Manage lifecycle events
-    DisposableEffect(Unit) {
-        onDispose {
-            exoPlayer.release()
-        }
-    }
-
-    // Use AndroidView to embed an Android View (PlayerView) into Compose\
     Box(
-        modifier = Modifier.background(color = Color.Black)
+        modifier = Modifier.fillMaxSize()
     ) {
-        Text(
-            text = "Preview",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold,
-            fontStyle = FontStyle.Italic,
-            modifier = Modifier.padding(start = 167.dp, top = 60.dp),
-            color = Color.LightGray
-        )
     }
-    Column {
-        AndroidView(
-            factory = { ctx ->
-                PlayerView(ctx).apply {
-                    player = exoPlayer
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(820.dp) // Set your desired height
-        )
+    Column(
+        modifier = Modifier.fillMaxSize().background(color = Color.Black)
+    ) {
         Surface(
-            modifier = Modifier.size(13.dp),
+            modifier = Modifier
+                .padding(top = 450.dp, start = 170.dp),
+            color = Color.Transparent
+        ) {
+            LottieAnimation(
+                composition = tiktokAnimationComposition,
+                iterations = LottieConstants.IterateForever,
+                contentScale = ContentScale.Inside,
+                modifier = Modifier
+                    .size(60.dp))
+        }
+        Surface(
+            modifier = Modifier.size(324.dp),
             color = Color.Transparent
         ) {}
         Row() {
@@ -94,7 +68,7 @@ fun VideoScreen(videoURI: String, onPostClick: () -> Unit) {
                 modifier = Modifier.size(20.dp),
                 color = Color.Transparent
             ) {}
-            Column {
+            Column() {
                 Icon(
                     imageVector = Icons.Filled.LibraryMusic,
                     contentDescription = "Sound",
@@ -114,7 +88,9 @@ fun VideoScreen(videoURI: String, onPostClick: () -> Unit) {
                     imageVector = Icons.Default.Iso,
                     contentDescription = "Effects",
                     tint = Color.White,
-                    modifier = Modifier.size(40.dp).padding(start = 2.dp, bottom = 2.dp)
+                    modifier = Modifier
+                        .size(40.dp)
+                        .padding(start = 2.dp, bottom = 2.dp)
                 )
                 Text(text = "Effects",
                     fontSize = 12.sp,
@@ -129,7 +105,9 @@ fun VideoScreen(videoURI: String, onPostClick: () -> Unit) {
                     imageVector = Icons.Filled.TextFields,
                     contentDescription = "Text",
                     tint = Color.White,
-                    modifier = Modifier.size(40.dp).padding(bottom = 2.5.dp)
+                    modifier = Modifier
+                        .size(40.dp)
+                        .padding(bottom = 2.5.dp)
                 )
                 Text(text = "Text",
                     fontSize = 12.sp,
@@ -144,7 +122,9 @@ fun VideoScreen(videoURI: String, onPostClick: () -> Unit) {
                 Icon(
                     imageVector = Icons.Filled.StickyNote2,
                     contentDescription = "Sticker",
-                    modifier = Modifier.size(40.dp).padding(start = 2.dp),
+                    modifier = Modifier
+                        .size(40.dp)
+                        .padding(start = 2.dp),
                     tint = Color.White
                 )
                 Text(text = "Sticker",
@@ -155,7 +135,7 @@ fun VideoScreen(videoURI: String, onPostClick: () -> Unit) {
                 modifier = Modifier.size(30.dp),
                 color = Color.Transparent
             ) {}
-            Card(onClick = { onPostClick() }, modifier = Modifier.size(width = 100.dp, height = 56.dp),
+            Card(onClick = { /* do smth */ }, modifier = Modifier.size(width = 100.dp, height = 56.dp),
                 colors = CardColors(contentColor = Color.White,
                     containerColor = Color(0xfff10e2a),
                     disabledContentColor = Color.White,
@@ -169,6 +149,10 @@ fun VideoScreen(videoURI: String, onPostClick: () -> Unit) {
                     ) {}
                     Text(text = "Post")
                 }
+            }
+            LaunchedEffect(Unit) {
+                delay(2000) // Delay for 2 seconds
+                onFinished()
             }
         }
     }

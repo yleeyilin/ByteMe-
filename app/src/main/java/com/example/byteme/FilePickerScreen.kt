@@ -16,13 +16,15 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CameraEnhance
 import androidx.compose.material.icons.filled.CheckCircleOutline
+import androidx.compose.material.icons.filled.Comment
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PeopleAlt
 import androidx.compose.material.icons.filled.PersonAddAlt
+import androidx.compose.material.icons.filled.Shop
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.material3.Button
@@ -30,10 +32,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults.indicatorLine
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,7 +50,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 
 @Composable
-fun MediaPickerRoot(){
+fun MediaPickerRoot(onVideoPicked: () -> Unit, videoDataState: VideoDataState) {
     Column (modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
@@ -214,7 +214,7 @@ fun MediaPickerRoot(){
         ) {}
         Column {
             Surface(
-                modifier = Modifier.padding(start = 140.dp, top = 10.dp, bottom = 10.dp)
+                modifier = Modifier.padding(start = 140.dp, top = 30.dp, bottom = 10.dp)
             ) {
                 Icon(
                     imageVector = Icons.Filled.VideoLibrary,
@@ -232,7 +232,57 @@ fun MediaPickerRoot(){
             Surface(
                 modifier = Modifier.padding(start = 125.dp, top = 10.dp)
             ) {
-                PickVideo()
+                PickVideo(onVideoPicked, videoDataState)
+            }
+            HorizontalDivider(
+                color = Color.LightGray,
+                modifier = Modifier.padding(top = 60.dp)
+            )
+            Row(
+                modifier = Modifier.padding(start = 18.dp, top = 10.dp)
+            ) {
+                Column {
+                    Icon(imageVector = Icons.Filled.Home,
+                        contentDescription = "Home",
+                        modifier = Modifier.size(47.dp))
+                    Text(text = "Home")
+                }
+                Surface(
+                    modifier = Modifier.size(20.dp)
+                ) {}
+                Column {
+                    Icon(imageVector = Icons.Filled.Shop,
+                        contentDescription = "Shop",
+                        modifier = Modifier.size(45.dp))
+                    Text(text = "Shop")
+                }
+                Surface(
+                    modifier = Modifier.size(20.dp)
+                ) {}
+                Column {
+                    Icon(imageVector = Icons.Filled.CameraEnhance,
+                        contentDescription = "Shop",
+                        modifier = Modifier.size(70.dp))
+                }
+                Surface(
+                    modifier = Modifier.size(20.dp)
+                ) {}
+                Column {
+                    Icon(imageVector = Icons.Filled.Comment,
+                        contentDescription = "Inbox",
+                        modifier = Modifier.size(45.dp))
+                    Text(text = "Inbox")
+                }
+                Surface(
+                    modifier = Modifier.size(20.dp)
+                ) {}
+                Column () {
+                    Icon(imageVector = Icons.Filled.PeopleAlt,
+                        contentDescription = "Profile",
+                        modifier = Modifier.size(48.dp).alpha(0.3F))
+                    Text(text = "Profile",
+                        modifier = Modifier.alpha(0.5F))
+                }
             }
         }
     }
@@ -314,7 +364,7 @@ fun PickMultipleImage(){
 }
 
 @Composable
-fun PickVideo(){
+fun PickVideo(onVideoPicked: () -> Unit, videoDataState: VideoDataState) {
     val result = remember { mutableStateOf<Uri?>(null) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
         result.value = it
@@ -325,7 +375,9 @@ fun PickVideo(){
             launcher.launch(
                 PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.VideoOnly)
             )
-        }, modifier = Modifier.size(width = 130.dp, height = 50.dp).alpha(0.8F),
+        }, modifier = Modifier
+            .size(width = 130.dp, height = 50.dp)
+            .alpha(0.8F),
             colors = CardColors(contentColor = Color.White,
                 containerColor = Color(0xfff10e2a),
                 disabledContentColor = Color.White,
@@ -342,7 +394,9 @@ fun PickVideo(){
         }
 
         result.value?.let { image ->
-            Text(text = "Video Path: "+image.path.toString())
+            videoDataState.onVideoClick(image)
+            onVideoPicked()
+//            Text(text = "Video Path: "+ image.path.toString())
         }
     }
 }
