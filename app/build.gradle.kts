@@ -51,6 +51,7 @@ android {
 
 dependencies {
 
+    implementation(libs.coil.compose)
     implementation(libs.androidx.compose.ui.ui)
     implementation(libs.androidx.material)
     implementation(libs.ui.tooling)
@@ -67,6 +68,7 @@ dependencies {
     implementation(libs.androidx.media3.common)
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.ui)
+    implementation(libs.volley)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
