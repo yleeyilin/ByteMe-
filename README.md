@@ -17,6 +17,10 @@ AdBlend is an innovative application designed to revolutionize the way content c
   git clone https://github.com/yleeyilin/ByteMe-.git
   ```
 
+2. **Integrate Google Services**
+   
+   Download the `google-services.json` file from [here](https://drive.google.com/file/d/1ZbnsG7GIpvTawbmIPxsAfMH9zFBeRysB/view?usp=sharing) and copy it into `app/`.
+
 2. **Create a new environment:**
   - Using Conda:
   ```sh
