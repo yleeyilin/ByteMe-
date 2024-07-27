@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 fun AdBlendApp(
     navController: NavHostController = rememberNavController()
 ) {
+//    FirebaseFetcher().downloadAllImages()
     val videoDataState = VideoDataState()
 
     NavHost(

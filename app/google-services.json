@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "106857551933",
+    "project_id": "byteme-8ac06",
+    "storage_bucket": "byteme-8ac06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106857551933:android:64e105962958616431f254",
+        "android_client_info": {
+          "package_name": "com.example.byteme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ4O2BzyDpTl9zUGibqtvV_YOce_KfEtM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -306,7 +306,6 @@ fun PickImage(){
         }
 
         result.value?.let { image ->
-            //Use Coil to display the selected image
             val painter = rememberAsyncImagePainter(
                 ImageRequest
                     .Builder(LocalContext.current)
