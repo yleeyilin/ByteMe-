@@ -77,7 +77,6 @@ fun PostingScreen(
         ) {}
         StaticToggleSet(onAdBlendSelect, adBlend)
     }
-    //TODO: Combine top bar + toggle set + buttons
 }
 
 @RequiresApi(Build.VERSION_CODES.Q)
@@ -130,14 +129,6 @@ fun TopBar(onBackNavigation: () -> Unit, uri: Uri) {
                         .align(Alignment.Top)
                 )
             }
-//            Image(
-//                imageVector = Icons.Default.Photo,
-//                contentDescription = "Placeholder for video thumbnail",
-//                modifier = Modifier
-//                    .size(210.dp)
-//                    .align(Alignment.Top)
-//                    .alpha(0.3F)
-//            )
         }
         Row() {
             Surface(
