@@ -5,6 +5,9 @@ import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,9 +44,11 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,7 +64,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import java.io.File
 
+private const val TAG = "PostingScreen"
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
@@ -118,16 +130,41 @@ fun TopBar(onBackNavigation: () -> Unit, uri: Uri) {
                 modifier = Modifier.size(40.dp),
                 color = Color.Transparent
             ) {}
-            createVideoThumbnail(LocalContext.current, uri)?.let {
-                Image(
-                    bitmap = it.asImageBitmap(),
-                    contentDescription = "Original Video Thumbnail",
-                    modifier = Modifier
-                        .size(200.dp)
-                        .padding(bottom = 10.dp)
 
-                        .align(Alignment.Top)
-                )
+            if (uri.toString() in FileMap.hshMap.keys) {
+                createVideoThumbnail(LocalContext.current, uri)?.let { bitmap ->
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = "Original Video Thumbnail",
+                        modifier = Modifier
+                            .size(200.dp)
+                            .padding(bottom = 10.dp)
+                            .align(Alignment.Top)
+                    )
+                }
+            } else {
+                val imageState = remember { mutableStateOf<Bitmap?>(null) }
+                val coroutineScope = rememberCoroutineScope()
+                val handler = Handler(Looper.getMainLooper())
+
+                LaunchedEffect(key1 = uri) {
+                    launch(Dispatchers.IO) {
+                        val bitmap = createVideoThumbnail(uri)
+                        withContext(Dispatchers.Main) {
+                            imageState.value = bitmap
+                        }
+                    }
+                }
+                imageState.value?.let { bitmap ->
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = "Original Video Thumbnail",
+                        modifier = Modifier
+                            .size(200.dp)
+                            .padding(bottom = 10.dp)
+                            .align(Alignment.Top)
+                    )
+                }
             }
         }
         Row() {
@@ -154,15 +191,49 @@ fun TopBar(onBackNavigation: () -> Unit, uri: Uri) {
     }
 }
 
-
 fun createVideoThumbnail(context: Context, uri: Uri): Bitmap? {
     try {
         val mediaMetadataRetriever = MediaMetadataRetriever()
         mediaMetadataRetriever.setDataSource(context, uri)
-        return mediaMetadataRetriever.frameAtTime
-    } catch (_: Exception) { }
-    return null
+        val bitmap = mediaMetadataRetriever.frameAtTime
+        mediaMetadataRetriever.release()
+        return bitmap
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return null
+    }
+}
 
+suspend fun createVideoThumbnail(uri: Uri): Bitmap? {
+    return try {
+        Log.d(TAG, "Reached createVideoThumbnail")
+
+        val localFile = withContext(Dispatchers.IO) {
+            File.createTempFile("tempVideo", ".mp4")
+        }
+        var bitmapRes: Bitmap? = null
+
+        withContext(Dispatchers.IO) {
+            FirebaseStorage.getInstance().getReferenceFromUrl(uri.toString())
+                .getFile(localFile)
+                .await()
+
+            val mediaMetadataRetriever = MediaMetadataRetriever()
+            mediaMetadataRetriever.setDataSource(localFile.absolutePath)
+            bitmapRes = mediaMetadataRetriever.frameAtTime
+            mediaMetadataRetriever.release()
+
+            localFile.delete()
+        }
+
+        Log.d(TAG, bitmapRes.toString())
+        Log.d(TAG, "Finished creating thumbnail")
+        bitmapRes
+    } catch (e: Exception) {
+        e.printStackTrace()
+        Log.e(TAG, "Error creating video thumbnail", e)
+        null
+    }
 }
 
 @Composable

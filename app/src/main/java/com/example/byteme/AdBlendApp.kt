@@ -39,6 +39,7 @@ fun AdBlendApp(
                     navController.navigate("Buffering")
                 },
                 onBackNavigation = {
+                    videoDataState.restartAdBlend()
                     navController.navigate("Video-picker")
                 },
                 uri = Uri.parse(videoDataState.VideoURI),

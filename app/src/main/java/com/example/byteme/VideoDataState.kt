@@ -27,4 +27,8 @@ class VideoDataState() {
             FileMap.revHshMap[VideoURI] ?: VideoURI // Get the original video URI if adBlend is false
         }
     }
+
+    fun restartAdBlend() {
+        adBlend = false
+    }
 }

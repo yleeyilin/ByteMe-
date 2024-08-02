@@ -53,6 +53,9 @@ android {
 }
 
 dependencies {
+    implementation("com.google.firebase:firebase-appcheck-safetynet:16.1.2")
+    implementation("com.google.firebase:firebase-appcheck-debug") // For debug builds
+    implementation("com.google.firebase:firebase-appcheck") // For release builds
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
 
