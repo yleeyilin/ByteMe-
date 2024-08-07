@@ -144,9 +144,6 @@ fun TopBar(onBackNavigation: () -> Unit, uri: Uri) {
                 }
             } else {
                 val imageState = remember { mutableStateOf<Bitmap?>(null) }
-                val coroutineScope = rememberCoroutineScope()
-                val handler = Handler(Looper.getMainLooper())
-
                 LaunchedEffect(key1 = uri) {
                     launch(Dispatchers.IO) {
                         val bitmap = createVideoThumbnail(uri)
