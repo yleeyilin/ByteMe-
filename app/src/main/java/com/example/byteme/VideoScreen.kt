@@ -71,7 +71,7 @@ fun VideoScreen(videoURI: String, onPostClick: () -> Unit) {
             fontWeight = FontWeight.SemiBold,
             fontStyle = FontStyle.Italic,
             modifier = Modifier.padding(start = 167.dp, top = 60.dp),
-            color = Color.LightGray
+            color = Color.Transparent
         )
     }
     Column {

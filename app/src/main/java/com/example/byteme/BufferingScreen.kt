@@ -151,7 +151,7 @@ fun BufferingScreen(onFinished: () -> Unit) {
                 }
             }
             LaunchedEffect(Unit) {
-                delay(2000) // Delay for 2 seconds
+                delay(3000) // Delay for 3 seconds
                 onFinished()
             }
         }
